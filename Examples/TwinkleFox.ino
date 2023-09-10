@@ -1,13 +1,13 @@
 #include "FastLED.h"
-#include "CRGBW.h"
+#include "../CRGBW.h"
 
 #define NUM_LEDS      143
 #define LED_TYPE      SK6812
 #define COLOR_ORDER   RGB
 #define DATA_PIN      2
 //#define CLK_PIN       4
-#define VOLTS         5
-#define MAX_MA        4000
+//#define VOLTS         5
+//#define MAX_MA        4000
 
 CRGBW leds[NUM_LEDS];
 #define NUM_LEDS_RGB  (NUM_LEDS * 3) // Number of LEDs for RGB color components
@@ -26,8 +26,8 @@ CRGBPalette16 gCurrentPalette;
 CRGBPalette16 gTargetPalette;
 
 void setup() {
-  delay(3000); // Safety startup delay
-  FastLED.setMaxPowerInVoltsAndMilliamps(VOLTS, MAX_MA);
+  delay(100); // Safety startup delay
+  //FastLED.setMaxPowerInVoltsAndMilliamps(VOLTS, MAX_MA);
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(ledsRGB, NUM_LEDS_RGB).setCorrection(TypicalLEDStrip);
 
   chooseNextColorPalette(gTargetPalette);
@@ -74,7 +74,6 @@ void drawTwinkles(CRGBW *leds) {
   } else {
     bg = gBackgroundColor;
   }
-
   uint8_t backgroundBrightness = (bg.r + bg.g + bg.b + bg.white) / 4;
 
   for (int i = 0; i < NUM_LEDS; i++) {
