@@ -1,5 +1,5 @@
 #include "FastLED.h"
-#include "FastLED_RGBW.h"
+#include "../CRGBW.h"
 
 #define NUM_LEDS 143
 #define DATA_PIN 2
