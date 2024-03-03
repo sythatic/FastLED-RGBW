@@ -200,15 +200,15 @@ const TProgmemRGBPalette16 Retro_p FL_PROGMEM =
 
 const TProgmemRGBPalette16* ActivePaletteList[] = {
 
-  //&LavaColors_p
-  //&CloudColors_p
-  //&OceanColors_p
-  //&ForestColors_p
-  //&HeatColors_p
+  //&LavaColors_p,
+  //&CloudColors_p,
+  //&OceanColors_p,
+  //&ForestColors_p,
+  //&HeatColors_p,
   &RainbowColors_p,
-  //&PartyColors_p,
+  &PartyColors_p,
 
-  //&Retro_p,
+  &Retro_p,
   //&FairyLight_p,
   //&RedWhiteBlue_p,
   //&RedWhiteGreen_p,
