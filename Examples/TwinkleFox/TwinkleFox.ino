@@ -1,10 +1,10 @@
 #include "FastLED.h"
 #include "CRGBW.h"
 
-#define NUM_LEDS      142
+#define NUM_LEDS      114
 #define LED_TYPE      SK6812
 #define COLOR_ORDER   RGB
-#define DATA_PIN      3
+#define DATA_PIN      0
 #define VOLTS         5
 #define MAX_MA        4000
 
@@ -23,6 +23,10 @@ CRGB gBackgroundColor = CRGB::Black;
 
 CRGBPalette16 gCurrentPalette;
 CRGBPalette16 gTargetPalette;
+
+void setPixelWhite(int i, uint8_t w) {
+  leds[i] = CRGBW(0, 0, 0, w);
+}
 
 void setup() {
   delay(3000); // Safety startup delay
@@ -101,6 +105,12 @@ void drawTwinkles(CRGBW *leds) {
   }
 }
 
+CRGBW rgb2rgbw(const CRGB& c) {
+  uint8_t minComponent = min(c.r, min(c.g, c.b));
+  return CRGBW(c.r - minComponent, c.g - minComponent, c.b - minComponent, minComponent);
+}
+
+
 CRGBW computeOneTwinkle(uint32_t ms, uint8_t salt) {
   uint16_t ticks = ms >> (8 - TWINKLE_SPEED);
   uint8_t fastcycle8 = ticks;
@@ -118,10 +128,11 @@ CRGBW computeOneTwinkle(uint32_t ms, uint8_t salt) {
   CRGBW c;
   if (bright > 0) {
     CRGB color = ColorFromPalette(gCurrentPalette, hue, bright, NOBLEND);
-    c.r = color.r;
-    c.g = color.g;
-    c.b = color.b;
-    c.white = 0;
+    CRGBW out = rgb2rgbw(color);
+    c.r = out.r;
+    c.g = out.g;
+    c.b = out.b;
+    c.white = out.white;
     if (COOL_LIKE_INCANDESCENT == 1) {
       coolLikeIncandescent(c, fastcycle8);
     }
@@ -205,12 +216,13 @@ const TProgmemRGBPalette16* ActivePaletteList[] = {
   //&OceanColors_p,
   //&ForestColors_p,
   //&HeatColors_p,
-  &RainbowColors_p,
-  &PartyColors_p,
 
-  &Retro_p,
+  //&RainbowColors_p,
+  //&PartyColors_p,
+  //&Retro_p,
+
   //&FairyLight_p,
-  //&RedWhiteBlue_p,
+  &RedWhiteBlue_p,
   //&RedWhiteGreen_p,
   //&Holly_p, 
   //&Snow_p,
