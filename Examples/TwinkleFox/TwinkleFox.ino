@@ -2,21 +2,12 @@
 
 #define NUM_LEDS      114
 #define LED_TYPE      SK6812
-#define COLOR_ORDER   RGB
+#define COLOR_ORDER   GRB     // Most SK6812 RGBW are GRBW; check your strip
 #define DATA_PIN      0
 #define VOLTS         5
 #define MAX_MA        4000
 
 CRGB leds[NUM_LEDS];
-
-// --- Native RGBW support setup ---
-Rgbw rgbw = Rgbw(
-    kRGBWDefaultColorTemp,
-    kRGBWExactColors,
-    W3 // Most SK6812 strips use GRBW. If yours is RGBW, use W2.
-);
-typedef SK6812<DATA_PIN, RGB> ControllerT;
-static RGBWEmulatedController<ControllerT, GRB> rgbwEmu(rgbw);
 
 #define TWINKLE_SPEED    3
 #define TWINKLE_DENSITY  4
@@ -33,8 +24,8 @@ CRGBPalette16 gTargetPalette;
 void setup() {
     delay(3000); // Safety startup delay
     FastLED.setMaxPowerInVoltsAndMilliamps(VOLTS, MAX_MA);
-    FastLED.addLeds(&rgbwEmu, leds, NUM_LEDS);
-    FastLED.setBrightness(255);
+    FastLED.addLeds<SK6812, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS).setRgbw(RgbwDefault());
+    FastLED.setBrightness(192);
     chooseNextColorPalette(gTargetPalette);
 }
 
@@ -192,7 +183,22 @@ const TProgmemRGBPalette16 Retro_p FL_PROGMEM =
 };
 
 const TProgmemRGBPalette16* ActivePaletteList[] = {
-  &RedWhiteBlue_p,
+
+  //&LavaColors_p,
+  //&CloudColors_p,
+  //&OceanColors_p,
+  //&ForestColors_p,
+  //&HeatColors_p,
+
+  &RainbowColors_p,
+  &PartyColors_p,
+  &Retro_p,
+
+  //&FairyLight_p,
+  //&RedWhiteBlue_p,
+  //&RedWhiteGreen_p,
+  //&Holly_p, 
+  //&Snow_p,
 };
 
 void chooseNextColorPalette( CRGBPalette16& pal)
